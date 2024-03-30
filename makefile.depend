@@ -5,4 +5,12 @@ iocs.o              :   iocs.s iocs.inc \
 app.o               :   app.s app.inc \
                         apple2.inc iocs.inc
 game.o              :   game.s game.inc \
-                        apple2.inc iocs.inc app.inc
+                        apple2.inc iocs.inc app.inc \
+                        penpen.inc road.inc
+penpen.o            :   penpen.s penpen.inc \
+                        apple2.inc iocs.inc app.inc \
+                        game.inc
+road.o              :   road.s road.inc \
+                        apple2.inc iocs.inc app.inc \
+                        game.inc
+                        
