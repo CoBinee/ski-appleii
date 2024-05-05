@@ -90,7 +90,9 @@
     bne     :+
 
     ; BEEP
-    jsr     BELL
+    ldx     #<@beep
+    lda     #>@beep
+    jsr     _IocsBeepScore
 
     ; 処理の設定
     lda     #<GameStart
@@ -119,6 +121,12 @@
     .word   @name_string
 @name_string:
     .byte   _PE, __N, _PE, __N, _SP, _NO, _SP, _SU, _KI, _HF, $00
+
+; BEEP
+@beep:
+    .byte   IOCS_BEEP_PI, _L16
+    .byte   IOCS_BEEP_PO, _L16
+    .byte   IOCS_BEEP_END
 
 .endproc
 
@@ -226,8 +234,10 @@
     cmp     #$00
     beq     :+
 
-    ; BEEP
-    jsr     BELL
+    ; BEEP の再生
+    ldx     #<@beep
+    lda     #>@beep
+    jsr     _IocsBeepScore
 
     ; 処理の設定
     lda     #<GameOver
@@ -244,6 +254,15 @@
     ; 終了
     rts
 
+; BEEP
+@beep:
+    .byte   _O4C, _L32
+    .byte   _O4A, _L32
+    .byte   _O4G, _L32
+    .byte   _O4B, _L32
+    .byte   _O4C, _L32
+    .byte   IOCS_BEEP_END
+
 .endproc
 
 ; ゲームオーバーになる
@@ -256,6 +275,9 @@
 
     ; 結果の描画
     jsr     _RoadDrawResultString
+
+    ; BEEP の再生
+    jsr     _RoadBeepResult
 
     ; 初期化の完了
     inc     APP_0_STATE

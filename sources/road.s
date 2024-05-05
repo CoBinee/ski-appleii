@@ -409,6 +409,34 @@
 
 .endproc
 
+; 高記録時に BEEP を再生する
+;
+.global _RoadBeepResult
+.proc   _RoadBeepResult
+
+    ; BEEP の再生
+    lda     road + Road::distances + ROAD_DISTANCE_1000
+    beq     :+
+    ldx     #<@beep
+    lda     #>@beep
+    jsr     _IocsBeepScore
+:
+
+    ; 終了
+    rts
+
+; BEEP
+@beep:
+    .byte   _R,   _L4
+    .byte   _O5A, _L16
+    .byte   _O5D, _L16
+    .byte   _O5A, _L16
+    .byte   _O5D, _L16
+    .byte   _O5A, _L8
+    .byte   IOCS_BEEP_END
+
+.endproc
+
 
 ; ピクセルパターン
 ;
